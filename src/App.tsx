@@ -2,7 +2,6 @@ import { useState } from 'react';
 import './App.css';
 import { Task } from './models/Task';
 
-
 function App() {
   const [todos, setTodos] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState<string>('');
@@ -13,7 +12,11 @@ function App() {
       setTodos([...todos, newTask]);
       setTaskInput('');
     };
-
+    
+  const deleteTask = (id: number) => {
+    setTodos(todos.filter(task => task.id !== id));
+  };
+ 
   const toggleTodo = (id: number) => {
   const updatedTodos = todos.map(task => {
     if (task.id === id) {
@@ -50,9 +53,20 @@ function App() {
             }`}
           >
             {task.title}
-            <button className="btn btn-sm btn-outline-success" onClick={() => toggleTodo(task.id)}>
-              {task.isDone ? '未完了に戻す' : '完了'}
-            </button>
+            <div className='btn-group'>
+              <button
+                className="btn btn-sm btn-outline-success"
+                onClick={() => toggleTodo(task.id)}
+              >
+                {task.isDone ? '未完了に戻す' : '完了'}
+              </button>
+              <button
+                className='btn btn-sm btn-outline-danger'
+                onClick={() => deleteTask(task.id)}
+              >
+                削除
+              </button>
+            </div>
           </li>
         ))}
       </ul>
